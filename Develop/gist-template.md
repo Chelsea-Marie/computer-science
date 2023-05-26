@@ -1,6 +1,6 @@
 # Regex Tutorial
 
-Regex, or regular expressions, are a special kind of expression that is used to match a sequence of characters. This tutorial will link to sections describing the most common regex types
+Regex, or regular expressions, are a special kind of expression that is used to match a pattern of characters. This tutorial will link to sections describing the most common regex types
 
 ## Summary
 
@@ -24,9 +24,9 @@ This tutorial links to sections describing the most common regex types and give 
 
 ### Anchors
 
-Anchors define the position where the sequence should be matched. They can be used to specify the start or the end of the sequence. The caret (^) is used to start and the ($) is used to end. (/b) looks for matching words and (?=) looks ahead.
+Anchors define the position where the pattern should be matched. They can be used to specify the start or the end of the pattern. The caret (^) is used to start and the ($) is used to end. (/b) looks for matching words and (?=) looks ahead.
 
-Sequence sequence = Sequence.compile("^\\w+\\d+$");
+Pattern pattern = Pattern.compile("^\\w+\\d+$");
 
 This uses the (^) to start, the (\b) looks for matching words, and the ($) to end.
 
@@ -34,7 +34,7 @@ The w+ means one or more characters - it will match any character a-z and number
 
 ### Quantifiers
 
-Quantifiers specify how many times a character can appear in a sequence. The most common ones are: * (0 or more), + (1 or more), and ? (0 or one). You can also put them together: {1,3}.
+Quantifiers specify how many times a character can appear in a pattern. The most common ones are: * (0 or more), + (1 or more), and ? (0 or one). You can also put them together: {1,3}.
 
  ^\w{1,3}$ 
 
@@ -66,7 +66,7 @@ This will match any string of characters that starts with A and ends with X.
 
 ### Grouping and Capturing
 
-Grouping lets a sequence be organized and then stored in a variable to use later. The sequence is broken into smaller groups and can then be taken out when matched. Capturing lets the rest of the sequence be put back together in different ways.
+Grouping lets a pattern be organized and then stored in a variable to use later. The pattern is broken into smaller groups and can then be taken out when matched. Capturing lets the rest of the pattern be put back together in different ways.
 
 (\d+)\s+(\w+)
 
@@ -82,19 +82,60 @@ This will match any string that has a number followed by a letter.
 
 ### Greedy and Lazy Match
 
-Greedy match looks for the longest possible matches to the sequence and lazy match looks for the shortest possible matches to the sequence.
+Greedy match looks for the longest possible matches to the pattern and lazy match looks for the shortest possible matches to the pattern.
+
+Greedy match:
+
+const pattern = /(.*){3}/;
+const text = 'abcdefghijklmnop';
+const matches = text.match(pattern);
+console.log(matches[0]); // abcdefghijklmno
+
+This return the longest possible match, which is the whole thing.
+
+Lazy match:
+
+const pattern = /(.*?){3}/;
+const text = 'abcdefghijklmnop';
+const matches = text.match(pattern);
+console.log(matches[0]); // abc
+
+This returns the shortest possible match, the first 3 letters: abc
 
 ### Boundaries
 
 Boundaries are used to indentify words or text in a specific location. Usually the beginning or end of a string. Could be words that start with a specific letter or phrase, or end that way.
 
+const regex = /\w+/g; 
+let string = "Hello World"; 
+let matches = string.match(regex); 
+console.log(matches); // ["Hello", "World"]
+
+This looks for sequences that begin with the string "hello world"
+
 ### Back-references
 
  A back reference is indicated by a backslash (\) followed by a number or an abbreviation. They refer to a previously captured group.
 
+ ([a-z])\1
+
+ This will find a pattern of a lowercase letter followed by an uppercase letter.
+
 ### Look-ahead and Look-behind
 
 Look-ahead and look-behind are used to check what comes before or after a specified character or sequence. 
+
+Look-ahead:
+
+'hello(?=\sworld)'
+
+This will match the word “hello” if it is followed by the word “world”
+
+Look-behind:
+
+'(?<=hello\s)world'
+
+This will match the word "world" if it preceded by the word "hello"
 
 ## Author
 
